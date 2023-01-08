@@ -13,7 +13,7 @@ public class DbConnection {
 	private static final int PORT = 3306;
 
 	public static Connection getConnection() {
-		String uri = String.format("jdbc:mysql://%s:%d/%s?user=%s&password=%s", HOST, PORT, SCHEMA, USER,
+		String uri = String.format("jdbc:mysql://%s:%d/%s?user=%s&password=%s&useSSL=false", HOST, PORT, SCHEMA, USER,
 				PASSWORD);
 		System.out.println("Connecting with uri =" + uri);
 		try {
@@ -22,7 +22,7 @@ public class DbConnection {
 			return conn;
 		} catch (SQLException e) {
 			System.out.println("Error: No connection");
-			throw new DbException("No connection");
+			throw new DbException(e);
 		}
 	}
 }
