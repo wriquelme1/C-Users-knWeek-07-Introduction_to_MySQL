@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package projects.service;
 
 import java.sql.SQLException;
@@ -9,34 +7,35 @@ import java.util.NoSuchElementException;
 
 import projects.dao.ProjectDao;
 import projects.entity.Project;
+import projects.exception.DbException;
 
-/**
- * This class implements the service layer in the 3-tier application. The CRUD operations that the
- * application performs are so simple that this class acts mostly as a pass-through from the input
- * layer to the data layer.
- * 
- * @author Promineo
- *
- */
+
+@SuppressWarnings("unused")
 public class ProjectsService {
   private ProjectDao projectDao = new ProjectDao();
 
-  /**
-   * This method simply calls the DAO class to insert a project row.
-   * 
-   * @param project The {@link Project} object.
-   * @return The Project object with the newly generated primary key value.
- * @throws SQLException 
-   */
-  public Project addProject(Project project) throws SQLException {
+    public Project addProject(Project project)  {
     return projectDao.insertProject(project);
   }
   public List<Project> fetchAllProjects(){
-	  return projectDao.fetchAllProject();
+	  return projectDao.fetchAllProjects();
   }
   
   public Project fetchProjectById(Integer projectId) {
 	  return projectDao.fetchProjectById(projectId).orElseThrow(() -> new NoSuchElementException(
 			  "Project with project ID = " + projectId + "does not exist."));
   }
+public void modifyProjectDetails(Project project) {
+
+	if(!projectDao.modifyProjectDetails(project)) {
+		throw new DbException("Project with ID=" + project.getProjectId()+ " does not exit.");
+	}
+	}
+public void deleteProject(Integer projectId) {
+	if(!projectDao.deleteProject(projectId)) {
+		throw new DbException("Project with ID =" + projectId + "does nor exist.");
+	}
+	
+}
+
 }
